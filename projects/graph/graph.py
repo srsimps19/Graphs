@@ -123,7 +123,23 @@ class Graph:
                 # Mark it as visited
                 # Then add A PATH TO all neighbors to the back of the queue
                     # (Make a copy of the path before adding)
-        pass  # TODO
+        
+        
+        listCheck = Queue()
+        listCheck.enqueue([starting_vertex])
+        visited = set()
+        while listCheck.size() > 0:
+            path = listCheck.dequeue()
+            checkVertex = path[-1]
+            if checkVertex not in visited:
+                if checkVertex == destination_vertex:
+                    return path
+                visited.add(checkVertex)
+                for next_vert in self.vertices[checkVertex]:
+                    nextPath = list(path)
+                    nextPath.append(next_vert)
+                    listCheck.enqueue(nextPath)
+        return "Cannot find path to solve this requirement!"
 
     def dfs(self, starting_vertex, destination_vertex):
         """
@@ -195,18 +211,22 @@ if __name__ == '__main__':
     #     1, 2, 4, 6, 3, 5, 7
     # '''
     # graph.dft(1)
+    print("\ndft_recursive:")
     graph.dft_recursive(1)
 
     # '''
     # Valid BFS path:
     #     [1, 2, 4, 6]
     # '''
-    # print(graph.bfs(1, 6))
+    print("\nbfs:")
+    print(graph.bfs(1, 6))
 
     # '''
     # Valid DFS paths:
     #     [1, 2, 4, 6]
     #     [1, 2, 4, 7, 6]
     # '''
+    print("\ndfs:")
     # print(graph.dfs(1, 6))
+    print("\ndfs_recursive:")
     # print(graph.dfs_recursive(1, 6))
