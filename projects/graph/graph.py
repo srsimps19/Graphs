@@ -147,9 +147,23 @@ class Graph:
         starting_vertex to destination_vertex in
         depth-first order.
         """
-        pass  # TODO
+        listStack = Stack()
+        listStack.push([starting_vertex])
+        visited = set()
+        while listStack.size() > 0:
+            listCheck = listStack.pop()
+            checkVertex = listCheck[-1]
+            if checkVertex not in visited:
+                if checkVertex == destination_vertex:
+                    return listCheck
+                visited.add(checkVertex)
+                for next_vert in self.vertices[checkVertex]:
+                    nextPath = list(listCheck)
+                    nextPath.append(next_vert)
+                    listStack.push(nextPath)
+        return "Cannot find path to destination"
 
-    def dfs_recursive(self, starting_vertex, destination_vertex):
+    def dfs_recursive(self, starting_vertex, destination_vertex, visited=None, path=None):
         """
         Return a list containing a path from
         starting_vertex to destination_vertex in
@@ -157,7 +171,20 @@ class Graph:
 
         This should be done using recursion.
         """
-        pass  # TODO
+        if visited is None:
+            visited = set()
+        if path is None:
+            path = []
+        visited.add(starting_vertex)
+        path = path + [starting_vertex]
+        if starting_vertex == destination_vertex:
+            return path
+        for neighbor in self.get_neighbors(starting_vertex):
+            if neighbor not in visited:
+                new_path = self.dfs_recursive(neighbor, destination_vertex, visited, path)
+                if new_path:
+                    return new_path
+        return None
 
 if __name__ == '__main__':
     graph = Graph()  # Instantiate your graph
@@ -227,6 +254,6 @@ if __name__ == '__main__':
     #     [1, 2, 4, 7, 6]
     # '''
     print("\ndfs:")
-    # print(graph.dfs(1, 6))
+    print(graph.dfs(1, 6))
     print("\ndfs_recursive:")
-    # print(graph.dfs_recursive(1, 6))
+    print(graph.dfs_recursive(1, 6))
